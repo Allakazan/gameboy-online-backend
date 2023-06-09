@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const file = require("./file");
+const file = require("./api/file");
 
 app.use(express.json({ extended: false }));
 
