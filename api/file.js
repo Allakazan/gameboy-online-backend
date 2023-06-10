@@ -2,7 +2,10 @@ const express = require("express");
 const fs = require("fs");
 const router = express.Router();
 
+const DataService = require('./clients/data.client')
 const GoogleDriveService = require('./clients/googleDrive.client')
+
+const dataService = new DataService();
 /**
  * GET file list.
  *
@@ -10,10 +13,7 @@ const GoogleDriveService = require('./clients/googleDrive.client')
  */
 router.get("/", async (req, res) => {
     try {
-        res.json({
-            status: 200,
-            message: "Get data has successfully",
-        });
+        res.json(dataService.getData());
     } catch (error) {
         console.error(error);
         return res.status(500).send("Server error");
@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 router.get("/:fileId", async (req, res) => {
     try {
         const { data, status, headers } = await new GoogleDriveService()
-            .getFile(req.params.fileId);
+            .getFileDrive(req.params.fileId);
 
         res.set({
             'Content-Type': headers['content-type'],
