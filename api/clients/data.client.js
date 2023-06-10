@@ -1,8 +1,9 @@
 const fs = require('fs');
+const path = require('path');
 
 module.exports = class DataService {
     constructor() {
-        this.dataset = JSON.parse(fs.readFileSync('./api/data/data.json'))
+        this.dataset = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/data.json')))
     }
 
     getData() {
