@@ -3,7 +3,8 @@ const fs = require("fs");
 const router = express.Router();
 
 const DataService = require('./clients/data.client')
-const GoogleDriveService = require('./clients/googleDrive.client')
+const GoogleDriveService = require('./clients/googleDrive.client');
+const allowCors = require("./helpers/allowCors");
 
 const dataService = new DataService();
 /**
@@ -11,17 +12,17 @@ const dataService = new DataService();
  *
  * @return file list | empty.
  */
-router.get("/", async (req, res) => {
+router.get("/", allowCors(async (req, res) => {
     try {
         res.json(dataService.getData());
     } catch (error) {
         console.error(error);
         return res.status(500).send("Server error");
     }
-});
+}));
 
 
-router.get("/:fileId", async (req, res) => {
+router.get("/:fileId", allowCors(async (req, res) => {
     try {
         const { data, status, headers } = await new GoogleDriveService()
             .getFileDrive(req.params.fileId);
@@ -37,6 +38,6 @@ router.get("/:fileId", async (req, res) => {
     } catch (error) {
         return res.status(error.config.status).send(error.config.data);
     }
-});
+}));
 
 module.exports = router;
