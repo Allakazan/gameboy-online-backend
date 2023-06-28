@@ -92,6 +92,8 @@ const getGame = async (name, token, needImage) => {
                 rom.imageUrl = cover;
                 rom.imageFromIGDB = true;
             }
+        } else {
+            rom.name = clearName;
         }
 
         console.log(`${i + 1} of ${data.length}`)
